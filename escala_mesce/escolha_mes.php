@@ -1,19 +1,23 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>ESCOLHA MÊS</title>
-</head>
 
-<body>
 
-<?php include "init.php";?>
+<?php
+include "header.php";
+include "init.php";
+?>
 
-	<div>
-		<form action = 'configuracao_escala.php'>
-			<fieldset>
-				<legend>Escolha um mês</legend>
-				Mês: <select name = "mes">
+<form action = 'configuracao_escala.php'>
+	<div class="table">
+		<img src="img/bg-th-left.gif" width="8" height="7" alt="" class="left">
+		<img src="img/bg-th-right.gif" width="7" height="7" alt=""
+			class="right">
+		<table class="listing form" cellpadding="0" cellspacing="0">
+			<tbody>
+				<tr>
+					<th class="full" colspan="2"></th>
+				</tr>
+				<tr>
+					<td class="first" width="172"><strong>Mês</strong></td>
+					<td class="last"><select name="mes">
 			 <?php
 				for($i = 2; $i <= 13; ++ $i) {
 					
@@ -23,11 +27,18 @@
 				}
 				
 				?>
-				</select> 
-				<input type="submit" value="Nova configuração" />
-			</fieldset>
-		</form>
+				</select></td>
+				</tr>
+				<tr class="bg">
+					<td class="first"><strong></strong></td>
+					<td class="last"><input type="submit"
+						value="Nova configuração de escala" /></td>
+				</tr>
+			</tbody>
+		</table>
+		<p>&nbsp;</p>
 	</div>
+</form>
 
 
 </body>

@@ -1,14 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>INSERÇÂO DE ESCALA</title>
-</head>
 
-<body>
 
 	<?php
+	include "header.php";
 	include "init.php";
+	include "pessoa_bd.php";
 	
 	if (isset ( $_POST ["mes"] )) {
 		$mes = $_POST ["mes"];
@@ -17,7 +12,7 @@
 		"Nenhum mês selecionado!";
 	
 	?>
-    </body>
+</body>
 </html>
 
 
@@ -56,7 +51,6 @@ function monta_html_form_cadastro_escala($mes) {
 	echo "</form>";
 }
 function monta_html_horarios($dia, $mes) {
-	
 	$tem_escala = false;
 	
 	echo "<tr><td>Dia " . date ( "j", mktime ( 0, 0, 0, $mes, $dia, date ( "Y" ) ) ) . "</td><td>" . date ( "D", mktime ( 0, 0, 0, $mes, $dia, date ( "Y" ) ) ) . "</td><td>";
@@ -92,7 +86,7 @@ function monta_html_horarios($dia, $mes) {
 		echo "</div><br/>";
 		$tem_escala = true;
 	}
-
+	
 	if (isset ( $_POST ["dia_" . $dia . "_horario_4"] )) {
 		echo "<div style = 'display:inline;text-align:left;'>";
 		echo "<input type='hidden' name='dia_" . $dia . "_horario_4' value='16:30'>16:30";
@@ -112,7 +106,7 @@ function monta_html_horarios($dia, $mes) {
 		echo "</div><br/>";
 		$tem_escala = true;
 	}
-
+	
 	if (isset ( $_POST ["dia_" . $dia . "_horario_6"] )) {
 		echo "<div style = 'display:inline;text-align:left;'>";
 		echo "<input type='hidden' name='dia_" . $dia . "_horario_6' value='19:30'>19:30";
@@ -122,7 +116,7 @@ function monta_html_horarios($dia, $mes) {
 		echo "</div><br/>";
 		$tem_escala = true;
 	}
-
+	
 	if (isset ( $_POST ["dia_" . $dia . "_horario_7"] )) {
 		echo "<div style = 'display:inline;text-align:left;'>";
 		echo "<input type='hidden' name='dia_" . $dia . "_horario_7' value='20:30'>20:30</div>";
@@ -133,18 +127,23 @@ function monta_html_horarios($dia, $mes) {
 		$tem_escala = true;
 	}
 	
-	if (!$tem_escala)
+	if (! $tem_escala)
 		echo "<div style = 'text-align:center;'>sem escala para esse dia</div>";
 	
 	echo "</td></tr>";
 }
 function monta_html_select_pessoas($horario, $dia) {
+	
+	$pessoas = pesquisar ();
+	
 	echo "&nbsp;<select name = 'pessoa_dia_" . $dia . "_horario_" . $horario . " title = 'selecione uma pessoa para esse horário'>";
-	for($i = 0; $i < count ( $_SESSION ["pessoas"] ); ++ $i) {
+	for($i = 0; $i < count ( $pessoas ); ++ $i) {
 		
-		echo "<option value = '" . $_SESSION ["pessoas"] [$i] . "'>" . $_SESSION ["pessoas"] [$i] . "</option>";
+		echo "<option value = '" . $pessoas [$i]["id"] . "'>" . $pessoas [$i]["nome"] . "</option>";
 	}
 	echo "</select>&nbsp;";
 }
 
-?></html>
+include "footer.php";
+
+?>
