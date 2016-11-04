@@ -8,12 +8,10 @@
 	<h2></h2>
 
 	<ul>
-		<li><a href="#" class="selected">Gerenciar grupos</a></li>
-		<li><a href="/pessoa/cadastro_pessoa.php" class="selected">Gerenciar pessoas</a></li>
-		<li><a href="#" class="selected">Gerenciar jornadas</a></li>
-		<li><a href="#" class="selected">Gerenciar configurações de escala</a></li>
+		<li><a href="/escala_web/grupo/grupo_cadastro.php" class="selected">Gerenciar grupos</a></li>
+		<li><a href="/escala_web/pessoa/pessoa_cadastro.php" class="selected">Gerenciar pessoas</a></li>
+		<li><a href="/escala_web/jornada/jornada_cadastro.php" class="selected">Gerenciar jornadas</a></li>
 		<li><a href="#" class="selected">Gerenciar escalas</a></li>
-		<li><a href="/configuracao_escala/escolha_mes.php">+ Nova escala</a></li>
 
 	</ul>
 

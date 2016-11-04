@@ -5,7 +5,7 @@
 include "../template/header.php";
 ?>
 
-<form action='configuracao_escala.php'>
+<form action='escala_configuracao.php'>
 	<h2>Escolha do mês</h2>
 	<div id="tab1" class="tabcontent">
 		<div class="form">

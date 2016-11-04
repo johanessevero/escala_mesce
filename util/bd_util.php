@@ -6,13 +6,13 @@ function get_conexao() {
 	$usuario = "root";
 	/*$senha = "john";*/
 	$senha = "root";
-	$nome_banco = "escala_mesce";
+	$nome_banco = "escala_web";
 	
 	$conexao = mysqli_connect ( $endereco, $usuario, $senha, $nome_banco );
 	
 	if (mysqli_errno ( $conexao )) {
 		
-		echo "Não foi possível conectar ao banco de dados";
+		echo "<span class = 'notification n-error'>Não foi possível conectar ao banco de dados</span>";
 		die ();
 	}
 	

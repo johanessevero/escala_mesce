@@ -14,14 +14,14 @@
 function monta_html_form_config_escala_mes($mes) {
 	$cont_semana = 0;
 	
-	echo "<form action = 'cadastro_escala.php' method = 'post'>";
+	echo "<form action = 'escala_cadastro.php' method = 'post'>";
 	echo "<div><input class = 'form_submit' type = 'submit' value = 'Salvar configuração'/></div>";
 	echo "<input type='hidden' name = 'mes' value = '" . $mes . "'/>";
 	echo "<h2>Configuração de escala</h2>";
 	echo "<table id='rounded-corner'>";
 	echo "<thead>";
 	echo "<tr>";
-	echo "<th colspan='2'>ESCALA MESCE</th>";
+	echo "<th colspan='2'>ESCALA</th>";
 	echo "<th>" . date ( "F \d\\e Y", mktime ( 0, 0, 0, $mes + 1, 0, date ( "Y" ) ) ) . "</th>";
 	echo "</tr>";
 	echo "</thead>";
@@ -178,7 +178,7 @@ function monta_html_horarios($dia, $mes) {
 	echo "</td></tr>";
 }
 function monta_html_select_quant_pessoas($horario, $dia) {
-	$pessoas = pesquisar ();
+	$pessoas = pesquisar_pessoas ();
 	
 	echo "<select class = 'form_select_1' name = 'quantidade_dia_" . $dia . "_horario_" . $horario . "' title = 'selecione a quantidade de pessoas para esse horário'>";
 	for($i = 1; $i <= count ( $pessoas ); ++ $i) {
