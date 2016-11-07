@@ -1,10 +1,10 @@
 <?php
 function inserir_grupo($nome) {
-	$sql = "insert into grupo (nome) values('" . $nome . "')";
+	$sql = "insert into grupo (nome, coordenador_id) values('" . $nome . "', ".$_SESSION["coordenador_id"].")";
 	mysqli_query ( get_conexao (), $sql );
 }
 function editar_grupo($id, $nome) {
-	$sql = "update grupo set nome = '" . $nome . "' where id = " . $id;
+	$sql = "update grupo set nome = '" . $nome . "' where id = " . $id ." and coordenador_id = ".$_SESSION["coordenador_id"];
 	mysqli_query ( get_conexao (), $sql );
 }
 function excluir_pessoas_grupo($id) {
@@ -20,7 +20,7 @@ function excluir_pessoas_grupo($id) {
 function excluir_grupo($id) {
 	
 	$sql = "DELETE FROM grupo";
-	$sql .= " WHERE grupo.id = ".$id;
+	$sql .= " WHERE grupo.id = ".$id." and coordenador_id = " .$_SESSION["coordenador_id"];
 	
 	mysqli_query( get_conexao (), $sql );
 	
@@ -30,7 +30,7 @@ function excluir_grupo($id) {
 
 
 function pesquisar_grupo_por_id($id) {
-	$sql = "select * from grupo where id = " . $id;
+	$sql = "select * from grupo where id = " . $id . " and coordenador_id = " . $_SESSION["coordenador_id"];
 	$resultado = mysqli_query ( get_conexao (), $sql );
 	
 	$grupos = array ();
@@ -43,7 +43,7 @@ function pesquisar_grupo_por_id($id) {
 	return $grupos [0];
 }
 function pesquisar_grupos() {
-	$sql = "select * from grupo";
+	$sql = "select * from grupo " . "where coordenador_id = " . $_SESSION["coordenador_id"];
 	$resultado = mysqli_query ( get_conexao (), $sql );
 	
 	$grupos = array ();

@@ -1,8 +1,8 @@
 
 
 <?php
-include "pessoa_bd.php";
 include "../template/header.php";
+include "pessoa_bd.php";
 
 monta_form_cadastro ();
 incluir ();

@@ -1,7 +1,6 @@
 <?php
-include "jornada_bd.php";
 include "../template/header.php";
-
+include "jornada_bd.php";
 
 monta_form_edicao();
 
@@ -24,6 +23,11 @@ function monta_form_edicao() {
 	echo "<div class='form_row'>";
 	echo "<label>Hora fim:</label> <input type='text' value = '".$jornada["hora_fim"]."' name = 'hora_fim' class='form_input' >";
 	echo "</div>";
+	
+	echo "<div class='form_row'>";
+	echo "<label>Descrição:</label> <input type='text' value = '".$jornada["descricao"]."' name = 'descricao' class='form_input' >";
+	echo "</div>";
+	
 	echo "<input type='hidden' name='editar' value='1' />";
 	echo "<input type='hidden' name='id' value='".$jornada["id"]."' />";
 	echo "<div class='form_row'>";

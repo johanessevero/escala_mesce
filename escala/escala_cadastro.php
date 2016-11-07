@@ -1,181 +1,95 @@
 	<?php
 	include "../template/header.php";
 	include "../pessoa/pessoa_bd.php";
+	include "../jornada/jornada_bd.php";
 	
-	if (isset ( $_GET ["mes"] )) {
-		monta_html_form_config_escala_mes ( $_GET ["mes"] - 1 );
-	} else
-		"Nenhum mês selecionado!";
+	if (empty ( $_POST ["data_inicial"] ) | empty ( $_POST ["data_final"] ) | empty ( $_POST ["grupo"] )) {
+		
+		echo "<span class = 'notification n-attention'>Para inserir uma nova escala, é preciso escolher uma data de início, uma data fim e um grupo. Clique em \"Gerenciar escalas\"</span>";
+	} else {
+		monta_html_form_config_escala_mes ( $_POST ["data_inicial"], $_POST ["data_final"], $_POST ["grupo"] );
+	}
+	
 	?>
 
 
 <?php
 /* por algum motivo a entrada numérica para um mês que se que é o número do mês mais 1 */
-function monta_html_form_config_escala_mes($mes) {
+function monta_html_form_config_escala_mes($data_inicial, $data_final, $grupo) {
 	$cont_semana = 0;
 	
-	echo "<form action = 'escala_cadastro.php' method = 'post'>";
-	echo "<div><input class = 'form_submit' type = 'submit' value = 'Salvar configuração'/></div>";
-	echo "<input type='hidden' name = 'mes' value = '" . $mes . "'/>";
-	echo "<h2>Configuração de escala</h2>";
-	echo "<table id='rounded-corner'>";
-	echo "<thead>";
-	echo "<tr>";
-	echo "<th colspan='2'>ESCALA</th>";
-	echo "<th>" . date ( "F \d\\e Y", mktime ( 0, 0, 0, $mes + 1, 0, date ( "Y" ) ) ) . "</th>";
-	echo "</tr>";
-	echo "</thead>";
-	echo "<tfoot>";
-	echo "<tr>";
-	echo "<td colspan='12'></td>";
-	echo "</tr>";
-	echo "</tfoot>";
-	echo "<tbody>";
-	echo "</tr>";
+	$data_inicial_ = explode ( "/", $data_inicial );
+	$data_final_ = explode ( "/", $data_final );
 	
-	if (strcmp ( date ( "D", mktime ( 0, 0, 0, $mes, 1, date ( "Y" ) ) ), "Sun" ) != 0) {
-		// echo "<th colspan = '4'>" . ++ $cont_semana . "ª semana</th>";
-		echo "<th>" . ++ $cont_semana . "ª semana/Dia do mês</th><th>Dia da semana</th><th>Horários</th>";
-	}
-	
-	for($i = 1; $i <= date ( "t", mktime ( 0, 0, 0, $mes + 1, 0, date ( "Y" ) ) ); ++ $i) {
+	if ($data_inicial_ [0] > $data_final_ [0]) {
 		
-		if (strcmp ( date ( "D", mktime ( 0, 0, 0, $mes, $i, date ( "Y" ) ) ), "Sun" ) == 0) {
-			// echo "<th colspan = '4'>" . ++ $cont_semana . "ª semana</th>";
-			echo "<th>" . ++ $cont_semana . "ª semana/Dia do mês</th><th>Dia da semana</th><th>Horários</th>";
-			monta_html_horarios ( $i, $mes );
-		} else if (strcmp ( date ( "D", mktime ( 0, 0, 0, $mes, $i, date ( "Y" ) ) ), "Sat" ) == 0) {
-			monta_html_horarios ( $i, $mes );
-		} else {
-			monta_html_horarios ( $i, $mes );
+		echo "<span class = 'notification n-error'>É preciso que a data final seja maior que a data inicial.</span>";
+	} else if ($data_inicial_ [1] != $data_final_ [1]) {
+		echo "<span class = 'notification n-error'>O período precisa estar dentro do mesmo mês.</span>";
+	} else if ($data_inicial_ [2] != $data_final_ [2]) {
+		echo "<span class = 'notification n-error'>O período precisa estar dentro do mesmo ano.</span>";
+	} else {
+		echo "<form method = 'post'>";
+		echo "<div><input class = 'form_submit' type = 'submit' value = 'Salvar escala'/></div>";
+		echo "<h2>Informações da escala </h2>";
+		echo "<table id='rounded-corner'>";
+		echo "<thead>";
+		echo "<tr>";
+		echo "<th colspan='4'>" . date ( "d/m/Y", mktime ( 0, 0, 0, $data_inicial_ [1], $data_inicial_ [0], $data_inicial_ [2] ) );
+		echo " até " . date ( "d/m/Y", mktime ( 0, 0, 0, $data_final_ [1], $data_final_ [0], $data_final_ [2] ) ) . "</th>";
+		echo "</tr>";
+		echo "</thead>";
+		echo "<tfoot>";
+		echo "</tfoot>";
+		echo "<tbody>";
+		
+		for($i = date ( "d", mktime ( 0, 0, 0, $data_inicial_ [1], $data_inicial_ [0], $data_inicial_ [2] ) ); $i <= date ( "d", mktime ( 0, 0, 0, $data_final_ [1], $data_final_ [0], $data_final_ [2] ) ); ++ $i) {
+			
+			if (strcmp ( date ( "D", mktime ( 0, 0, 0, $data_inicial_ [1], $i, $data_inicial_ [2] ) ), "Sun" ) == 0) {
+				echo "<tr><th>" . ++ $cont_semana . "ª semana/Dia do mês</th><th>Dia da semana</th><th>Horários</th></tr>";
+				// monta_html_horarios ( $i, $mes );
+			} else {
+				// monta_html_horarios ( $i, $mes );
+			}
+			
+			if ($i % 2 == 0)
+				echo "<tr class='odd'>";
+			else
+				echo "<tr class='even'>";
+			
+			echo "<td>" . date ( "d", mktime ( 0, 0, 0, $data_inicial_ [1], $i, $data_inicial_ [2] ) ) . "</td>";
+			echo "<td>" . date ( "D", mktime ( 0, 0, 0, $data_inicial_ [1], $i, $data_inicial_ [2] ) ) . "</td>";
+			monta_html_horarios ( $i, $data_inicial_ [1], $data_inicial_ [2] );
+			echo "</tr>";
 		}
+		
+		echo "<tbody>";
+		echo "</table>";
+		
+		echo "</form>";
+	}
+}
+function monta_html_horarios($dia, $mes, $ano) {
+	$class_linha = "";
+	$jornadas = pesquisar_jornadas ();
+	
+	echo "<td>";
+	
+	echo "<table class = 'escolha_horario'>";
+	echo "<tr>";
+	
+	foreach ( $jornadas as $jornada ) {
+		
+		echo "<td><input class = 'check' type = 'checkbox' value = '".$dia."-".$mes."-".$ano."'/></td>";
+		echo "<td>".$jornada ["hora_inicio"] . "-" . $jornada ["hora_fim"] . " "."</td>";
+		echo "<td>"."<form method = 'post'>";
+		echo "<input type='submit' value = '' style = 'background-image:url(../resources/img/people.png);repeat-x:no-repeat;width:34px;height:34px;cursor:pointer;' title = 'clique para adicionar/remover pessoas à jornada'/>";
+		echo "</form>"."</td>";
 	}
 	
-	echo "<tbody>";
-	echo "</table>";
+	echo "</tr></table>";
 	
-	echo "</form>";
-}
-function monta_html_horarios($dia, $mes) {
-	$class_linha = "";
-	
-	if ($dia % 2 == 0)
-		$class_linha = "even";
-	else
-		$class_linha = "odd";
-	
-	echo "<tr class = '" . $class_linha . "'>";
-	echo "<td>Dia " . date ( "j", mktime ( 0, 0, 0, $mes, $dia, date ( "Y" ) ) ) . "</td>";
-	echo "<td>" . date ( "D", mktime ( 0, 0, 0, $mes, $dia, date ( "Y" ) ) ) . "</td>";
-	echo "<td>";
-	
-	/* horários */
-	
-	echo "<table><tr>";
-	
-	/* horario 1 */
-	
-	echo "<td><table class = 'escolha_horario'>";
-	echo "<tr>";
-	echo "<td><input class = 'check' type='checkbox' name='dia_" . $dia . "_horario_1' value='08:00'></td>";
-	echo "<td>";
-	monta_html_select_quant_pessoas ( 1, $dia );
 	echo "</td>";
-	echo "<td>08:00</td>";
-	echo "</tr>";
-	echo "</table></td>";
-	
-	/* fim horario 1 */
-	
-	/* horario 2 */
-	
-	echo "<td><table class = 'escolha_horario'>";
-	echo "<tr>";
-	echo "<td><input class = 'check' type='checkbox' name='dia_" . $dia . "_horario_2' value='09:00'></td>";
-	echo "<td>";
-	monta_html_select_quant_pessoas ( 2, $dia );
-	echo "</td>";
-	echo "<td>09:00</td>";
-	echo "</tr>";
-	echo "</table></td>";
-	
-	/* fim horario 2 */
-	
-	/* horario 3 */
-	
-	echo "<td><table class = 'escolha_horario'>";
-	echo "<tr>";
-	echo "<td><input class = 'check' type='checkbox' name='dia_" . $dia . "_horario_3' value='10:00'></td>";
-	echo "<td>";
-	monta_html_select_quant_pessoas ( 3, $dia );
-	echo "</td>";
-	echo "<td>10:00</td>";
-	echo "</tr>";
-	echo "</table></td></tr><tr>";
-	
-	/* fim horario 3 */
-	
-	/* horario 4 */
-	
-	echo "<td><table class = 'escolha_horario'>";
-	echo "<tr>";
-	echo "<td><input class = 'check' type='checkbox' name='dia_" . $dia . "_horario_4' value='16:30'></td>";
-	echo "<td>";
-	monta_html_select_quant_pessoas ( 4, $dia );
-	echo "</td>";
-	echo "<td>16:30</td>";
-	echo "</tr>";
-	echo "</table></td>";
-	
-	/* fim horario 4 */
-	
-	/* horario 5 */
-	
-	echo "<td><table class = 'escolha_horario'>";
-	echo "<tr>";
-	echo "<td><input class = 'check' type='checkbox' name='dia_" . $dia . "_horario_5' value='19:00'></td>";
-	echo "<td>";
-	monta_html_select_quant_pessoas ( 5, $dia );
-	echo "</td>";
-	echo "<td>19:00</td>";
-	echo "</tr>";
-	echo "</table></td>";
-	
-	/* fim horario 5 */
-	
-	/* horario 6 */
-	
-	echo "<td><table class = 'escolha_horario'>";
-	echo "<tr>";
-	echo "<td><input class = 'check' type='checkbox' name='dia_" . $dia . "_horario_6' value='19:30'></td>";
-	echo "<td>";
-	monta_html_select_quant_pessoas ( 6, $dia );
-	echo "</td>";
-	echo "<td>19:30</td>";
-	echo "</tr>";
-	echo "</table></td></tr><tr>";
-	
-	/* fim horario 6 */
-	
-	/* horario 7 */
-	
-	echo "<td><table class = 'escolha_horario'>";
-	echo "<tr>";
-	echo "<td><input class = 'check' type='checkbox' name='dia_" . $dia . "_horario_7' value='20:30'></td>";
-	echo "<td>";
-	monta_html_select_quant_pessoas ( 7, $dia );
-	echo "</td>";
-	echo "<td>20:30</td>";
-	echo "</tr>";
-	echo "</table></td></tr>";
-	
-	/* fim horario 7 */
-	
-	echo "</table></tr>";
-	
-	/* fim horarios */
-	
-	echo "</td></tr>";
 }
 function monta_html_select_quant_pessoas($horario, $dia) {
 	$pessoas = pesquisar_pessoas ();

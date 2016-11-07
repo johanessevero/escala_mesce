@@ -1,25 +1,25 @@
 <?php
-function inserir_pessoa($nome, $email) {
-	$sql = "insert into pessoa (nome, email) values('" . $nome . "','" . $email . "')";
+function inserir_pessoa($nome, $email) { 
+	$sql = "insert into pessoa (nome, email, coordenador_id) values('" . $nome . "','" . $email . "',".$_SESSION["coordenador_id"].")";
 	mysqli_query ( get_conexao (), $sql );
 }
 
 function editar_pessoa($id, $nome, $email) {
 	
-	$sql = "update pessoa set nome = '" . $nome . "', email= '" . $email . "' where id = " . $id;
+	$sql = "update pessoa set nome = '" . $nome . "', email= '" . $email . "' where id = " . $id." and coordenador_id = " .$_SESSION["coordenador_id"];
 	mysqli_query ( get_conexao (), $sql );
 	
 }
 
 function excluir_pessoa($id) {
 
-	$sql = "delete from pessoa where id = ".$id;
+	$sql = "delete from pessoa where id = ".$id." and coordenador_id = " .$_SESSION["coordenador_id"];
 	mysqli_query ( get_conexao (), $sql );
 
 }
 
 function pesquisar_pessoa_por_id($id) {
-	$sql = "select * from pessoa where id = ".$id;
+	$sql = "select * from pessoa where id = ".$id." and coordenador_id = " .$_SESSION["coordenador_id"];
 	$resultado = mysqli_query ( get_conexao (), $sql );
 
 	$pessoas = array ();
@@ -37,7 +37,7 @@ function pesquisar_pessoa_por_id($id) {
 }
 
 function pesquisar_pessoas() {
-	$sql = "select * from pessoa";
+	$sql = "select * from pessoa"." where coordenador_id = " .$_SESSION["coordenador_id"];
 	$resultado = mysqli_query ( get_conexao (), $sql );
 	
 	$pessoas = array ();

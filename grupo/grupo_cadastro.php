@@ -1,8 +1,9 @@
 
 
 <?php
-include "grupo_bd.php";
 include "../template/header.php";
+include "grupo_bd.php";
+
 
 monta_form_cadastro ();
 inserir ();

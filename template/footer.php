@@ -8,11 +8,10 @@
 	<h2></h2>
 
 	<ul>
-		<li><a href="/escala_web/grupo/grupo_cadastro.php" class="selected">Gerenciar grupos</a></li>
-		<li><a href="/escala_web/pessoa/pessoa_cadastro.php" class="selected">Gerenciar pessoas</a></li>
-		<li><a href="/escala_web/jornada/jornada_cadastro.php" class="selected">Gerenciar jornadas</a></li>
-		<li><a href="#" class="selected">Gerenciar escalas</a></li>
-
+		<li><a href="/escala_web/pessoa/pessoa_cadastro.php" class="selected">Pessoas</a></li>
+		<li><a href="/escala_web/grupo/grupo_cadastro.php" class="selected">Grupos</a></li>
+		<li><a href="/escala_web/jornada/jornada_cadastro.php" class="selected">Jornadas</a></li>
+		<li><a href="/escala_web/escala/escala_gerencia.php" class="selected">Escalas</a></li>
 	</ul>
 
 </div>

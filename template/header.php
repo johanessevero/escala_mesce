@@ -1,5 +1,8 @@
 
 <?php
+session_start();
+$_SESSION["coordenador_id"] = 2; 
+
 define ( 'DS', DIRECTORY_SEPARATOR );
 define ( 'ROOT', $_SERVER ['DOCUMENT_ROOT'] );
 define ( 'SITE_ROOT', ROOT . DS . 'escala_web' . DS );

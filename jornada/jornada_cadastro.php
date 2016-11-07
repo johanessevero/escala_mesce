@@ -1,8 +1,9 @@
 
 
 <?php
-include "jornada_bd.php";
 include "../template/header.php";
+include "jornada_bd.php";
+
 
 monta_form_cadastro ();
 incluir ();
@@ -26,6 +27,11 @@ function monta_form_cadastro() {
 	echo "<div class='form_row'>";
 	echo "<label>Hora fim:</label> <input type='text' name = 'hora_fim' class='form_input' >";
 	echo "</div>";
+	
+	echo "<div class='form_row'>";
+	echo "<label>Descrição:</label> <input type='text' name = 'descricao' class='form_input' >";
+	echo "</div>";
+	
 	echo "<input type='hidden' name='incluir' value='1' />";
 	echo "<div class='form_row'>";
 	echo "<input type='submit' class='form_submit' value='Salvar' title = 'clique para salvar'>";
@@ -36,8 +42,8 @@ function monta_form_cadastro() {
 	echo "</form>";
 }
 function incluir() {
-	if (! empty ( $_POST ["hora_inicio"] ) & ! empty ( $_POST ["hora_fim"] ) & ! empty ( $_POST ["incluir"] )) {
-		inserir_jornada ( $_POST ["hora_inicio"], $_POST ["hora_fim"] );
+	if (! empty ( $_POST ["hora_inicio"] ) & ! empty ( $_POST ["hora_fim"]  ) & ! empty ( $_POST ["incluir"] )) {
+		inserir_jornada ( $_POST ["hora_inicio"], $_POST ["hora_fim"], $_POST["descricao"] );
 		echo "<span class = 'notification n-success'>Dados salvos.</span>";
 	} else {
 		if (isset ( $_POST ["incluir"] )) {
@@ -47,7 +53,7 @@ function incluir() {
 }
 function editar() {
 	if (! empty ( $_POST ["hora_inicio"] ) & ! empty ( $_POST ["hora_fim"] ) & ! empty ( $_POST ["editar"] )) {
-		editar_jornada ( $_POST ["id"], $_POST ["hora_inicio"], $_POST ["hora_fim"] );
+		editar_jornada ( $_POST ["id"], $_POST ["hora_inicio"], $_POST ["hora_fim"] , $_POST["descricao"] );
 		echo "<span class = 'notification n-success'>Dados salvos.</span>";
 	} else {
 		if (isset ( $_POST ["editar"] )) {
@@ -72,6 +78,7 @@ function listar() {
 		echo "<tr>";
 		echo "<th>Hora de início</th>";
 		echo "<th>Hora fim</th>";
+		echo "<th>Descrição</th>";
 		echo "<th></th>";
 		echo "<th></th>";
 		echo "</tr>";
@@ -92,6 +99,7 @@ function listar() {
 				echo "<tr class='even'>";
 			echo "<td>" . $jornada ["hora_inicio"] . "</td>";
 			echo "<td>" . $jornada ["hora_fim"] . "</td>";
+			echo "<td>" . $jornada ["descricao"] . "</td>";
 			echo "<td><form action = 'jornada_edicao.php' method = 'post'>";
 			echo "<input type='hidden' name='editar' value='1' />";
 			echo "<input type='hidden' name='id' value='" . $jornada ["id"] . "' />";

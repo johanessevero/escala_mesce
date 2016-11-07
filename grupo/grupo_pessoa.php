@@ -1,7 +1,8 @@
 <?php
+include "../template/header.php";
 include "grupo_bd.php";
 include "../pessoa/pessoa_bd.php";
-include "../template/header.php";
+
 ?>
 
 <?php
