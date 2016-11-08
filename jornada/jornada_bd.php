@@ -18,7 +18,7 @@ function excluir_jornada($id) {
 
 }
 
-function pesquisar_jornada_por_id($id) {
+function get_jornada_por_id($id) {
 	$sql = "select * from jornada where id = ".$id ." and coordenador_id = " .$_SESSION["coordenador_id"];
 	$resultado = mysqli_query ( get_conexao (), $sql );
 
@@ -36,7 +36,7 @@ function pesquisar_jornada_por_id($id) {
 		return $jornadas;
 }
 
-function pesquisar_jornadas() {
+function get_jornadas() {
 	$sql = "select * from jornada "." where coordenador_id = " .$_SESSION["coordenador_id"];
 	$resultado = mysqli_query ( get_conexao (), $sql );
 	
@@ -49,6 +49,7 @@ function pesquisar_jornadas() {
 	
 	return $jornadas;
 }
+
 
 
 ?>

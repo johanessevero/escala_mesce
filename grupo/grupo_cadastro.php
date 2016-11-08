@@ -5,10 +5,10 @@ include "../template/header.php";
 include "grupo_bd.php";
 
 
-monta_form_cadastro ();
 inserir ();
 excluir ();
 editar_pessoa();
+monta_form_cadastro ();
 listar ();
 
 ?>
@@ -69,7 +69,7 @@ function excluir() {
 	}
 }
 function listar() {
-	$grupos = pesquisar_grupos ();
+	$grupos = get_grupos ();
 	
 	if (count ( $grupos ) > 0) {
 		echo "<h2>Grupos</h2>";

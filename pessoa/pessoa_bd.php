@@ -18,7 +18,7 @@ function excluir_pessoa($id) {
 
 }
 
-function pesquisar_pessoa_por_id($id) {
+function get_pessoa_por_id($id) {
 	$sql = "select * from pessoa where id = ".$id." and coordenador_id = " .$_SESSION["coordenador_id"];
 	$resultado = mysqli_query ( get_conexao (), $sql );
 
@@ -36,7 +36,7 @@ function pesquisar_pessoa_por_id($id) {
 		return $pessoas;
 }
 
-function pesquisar_pessoas() {
+function get_pessoas() {
 	$sql = "select * from pessoa"." where coordenador_id = " .$_SESSION["coordenador_id"];
 	$resultado = mysqli_query ( get_conexao (), $sql );
 	

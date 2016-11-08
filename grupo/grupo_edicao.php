@@ -11,7 +11,7 @@ monta_form_edicao();
 <?php
 function monta_form_edicao() {
 	
-	$grupo = pesquisar_grupo_por_id($_POST["id"]);
+	$grupo = get_grupo_por_id($_POST["id"]);
 	
 	echo "<h2>Informações da grupo</h2>";
 	echo "<form action = 'grupo_cadastro.php' method = 'post'>";

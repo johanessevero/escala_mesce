@@ -13,7 +13,13 @@ body {
 
 a {
 	color: #0291d4;
-	text-decoration: none;
+	/*text-decoration: none;*/
+}
+
+a:hover {
+	
+	text-decoration: underline;
+	
 }
 
 a#closebt {
@@ -754,3 +760,38 @@ input.loginform_submit {
 	width: 30px;
 	height: 30px;
 }
+
+.rel_escala {
+	
+	border-width: 1px;
+	border-style: solid;
+	border-color: black;
+	
+}
+
+.rel_escala td {
+	
+	border-width: 1px;
+	border-style: solid;
+	border-color: black;
+	
+}
+
+.rel_escala th {
+	
+	border-width: 1px;
+	border-style: solid;
+	border-color: black;
+	
+}
+
+.rel_escala tr {
+	
+	border-width: 1px;
+	border-style: solid;
+	border-color: black;
+	
+}
+
+
+

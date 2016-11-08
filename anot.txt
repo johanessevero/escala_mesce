@@ -1,7 +1,2 @@
-> exclusao de pessoas;
-> inclusão de configuração;
-> inclusão de escala: pessoa-escala;
-> visualização da escala do mês;
-> restrições
-> folha de ponto
-> justificativa
+> parei na edição de dados primários da escala
+> é preciso fazer o campo de observação da escala e o relatorio de escala

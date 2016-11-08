@@ -1,13 +1,14 @@
 
 <?php
 session_start();
-$_SESSION["coordenador_id"] = 2; 
+$_SESSION["coordenador_id"] = 1; 
 
 define ( 'DS', DIRECTORY_SEPARATOR );
 define ( 'ROOT', $_SERVER ['DOCUMENT_ROOT'] );
 define ( 'SITE_ROOT', ROOT . DS . 'escala_web' . DS );
 
 include SITE_ROOT . "util/bd_util.php";
+include SITE_ROOT . "util/util.php";
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

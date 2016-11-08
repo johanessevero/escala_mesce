@@ -7,7 +7,7 @@ include "../pessoa/pessoa_bd.php";
 
 <?php
 
-$grupo = pesquisar_grupo_por_id ( $_POST ["grupo_id"] );
+$grupo = get_grupo_por_id ( $_POST ["grupo_id"] );
 
 inserir ( $grupo );
 excluir ( $grupo );
@@ -31,7 +31,11 @@ function excluir($grupo) {
 	}
 }
 function listar_pessoas($grupo) {
-	$pessoas = pesquisar_pessoas ();
+	$pessoas = get_pessoas ();
+	
+	echo "<form action = 'grupo_cadastro.php' method = 'post'>";
+	echo "<input type='submit' class = 'form_submit' value = 'Voltar' title = 'clique para voltar'/>";
+	echo "</form>";
 	
 	if (count ( $pessoas ) > 0) {
 		echo "</tr>";

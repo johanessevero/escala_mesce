@@ -4,10 +4,11 @@
 include "../template/header.php";
 include "pessoa_bd.php";
 
-monta_form_cadastro ();
+
 incluir ();
 excluir ();
 editar ();
+monta_form_cadastro ();
 listar ();
 
 ?>
@@ -75,7 +76,7 @@ function excluir() {
 	}
 }
 function listar() {
-	$pessoas = pesquisar_pessoas ();
+	$pessoas = get_pessoas ();
 	
 	if (count ( $pessoas ) > 0) {
 		echo "<h2>Pessoas</h2>";

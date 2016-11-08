@@ -5,10 +5,10 @@ include "../template/header.php";
 include "jornada_bd.php";
 
 
-monta_form_cadastro ();
 incluir ();
 excluir ();
 editar ();
+monta_form_cadastro ();
 listar	();
 
 ?>
@@ -69,7 +69,7 @@ function excluir() {
 	}
 }
 function listar() {
-	$jornadas = pesquisar_jornadas ();
+	$jornadas = get_jornadas ();
 	
 	if (count ( $jornadas ) > 0) {
 		echo "<h2>Jornadas</h2>";

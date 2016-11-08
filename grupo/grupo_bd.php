@@ -3,6 +3,13 @@ function inserir_grupo($nome) {
 	$sql = "insert into grupo (nome, coordenador_id) values('" . $nome . "', ".$_SESSION["coordenador_id"].")";
 	mysqli_query ( get_conexao (), $sql );
 }
+
+function inserir_pessoa_grupo($pessoa_id, $grupo_id) {
+	$sql = "insert into pessoa_grupo (pessoa_id, grupo_id) values(" . $pessoa_id . ", " . $grupo_id . ")";
+	mysqli_query ( get_conexao (), $sql );
+}
+
+
 function editar_grupo($id, $nome) {
 	$sql = "update grupo set nome = '" . $nome . "' where id = " . $id ." and coordenador_id = ".$_SESSION["coordenador_id"];
 	mysqli_query ( get_conexao (), $sql );
@@ -17,6 +24,11 @@ function excluir_pessoas_grupo($id) {
 	
 }
 
+function excluir_pessoa_grupo($pessoa_id, $grupo_id) {
+	$sql = "delete from pessoa_grupo where pessoa_id = " . $pessoa_id . " and " . $grupo_id;
+	mysqli_query ( get_conexao (), $sql );
+}
+
 function excluir_grupo($id) {
 	
 	$sql = "DELETE FROM grupo";
@@ -24,12 +36,9 @@ function excluir_grupo($id) {
 	
 	mysqli_query( get_conexao (), $sql );
 	
-	
 }
 
-
-
-function pesquisar_grupo_por_id($id) {
+function get_grupo_por_id($id) {
 	$sql = "select * from grupo where id = " . $id . " and coordenador_id = " . $_SESSION["coordenador_id"];
 	$resultado = mysqli_query ( get_conexao (), $sql );
 	
@@ -42,7 +51,7 @@ function pesquisar_grupo_por_id($id) {
 	
 	return $grupos [0];
 }
-function pesquisar_grupos() {
+function get_grupos() {
 	$sql = "select * from grupo " . "where coordenador_id = " . $_SESSION["coordenador_id"];
 	$resultado = mysqli_query ( get_conexao (), $sql );
 	
@@ -55,14 +64,7 @@ function pesquisar_grupos() {
 	
 	return $grupos;
 }
-function inserir_pessoa_grupo($pessoa_id, $grupo_id) {
-	$sql = "insert into pessoa_grupo (pessoa_id, grupo_id) values(" . $pessoa_id . ", " . $grupo_id . ")";
-	mysqli_query ( get_conexao (), $sql );
-}
-function excluir_pessoa_grupo($pessoa_id, $grupo_id) {
-	$sql = "delete from pessoa_grupo where pessoa_id = " . $pessoa_id . " and " . $grupo_id;
-	mysqli_query ( get_conexao (), $sql );
-}
+
 function get_num_pessoas_grupo($grupo_id) {
 	$sql = "select count(*) as num_pessoas from pessoa_grupo where grupo_id = " . $grupo_id;
 	$resultado = mysqli_query ( get_conexao (), $sql );

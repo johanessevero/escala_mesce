@@ -10,7 +10,7 @@ monta_form_edicao();
 <?php
 function monta_form_edicao() {
 	
-	$pessoa = pesquisar_pessoa_por_id($_POST["id"]);
+	$pessoa = get_pessoa_por_id($_POST["id"]);
 	
 	echo "<h2>Informações da pessoa</h2>";
 	echo "<form action = 'pessoa_cadastro.php' method = 'post'>";
