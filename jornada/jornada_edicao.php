@@ -9,7 +9,7 @@ monta_form_edicao();
 <?php
 function monta_form_edicao() {
 	
-	$jornada = get_jornada_por_id($_POST["id"]);
+	$jornada = get_jornada_por_id($_GET["id"]);
 	
 	echo "<h2>Informações da jornada</h2>";
 	echo "<form action = 'jornada_cadastro.php' method = 'post'>";

@@ -16,7 +16,7 @@ listar ();
 <?php
 function monta_form_cadastro() {
 	echo "<h2>Informações da pessoa</h2>";
-	echo "<form method = 'post'>";
+	echo "<form method = 'GET'>";
 	echo "<div id='tab1' class='tabcontent' style='display: block;'>";
 	echo "<div class='form'>";
 	
@@ -37,29 +37,29 @@ function monta_form_cadastro() {
 	echo "</form>";
 }
 function incluir() {
-	if (! empty ( $_POST ["nome"] ) & ! empty ( $_POST ["email"] ) & ! empty ( $_POST ["incluir"] )) {
-		inserir_pessoa ( $_POST ["nome"], $_POST ["email"] );
+	if (! empty ( $_GET ["nome"] ) & ! empty ( $_GET ["email"] ) & ! empty ( $_GET ["incluir"] )) {
+		inserir_pessoa ( $_GET ["nome"], $_GET ["email"] );
 		echo "<span class = 'notification n-success'>Dados salvos.</span>";
 	} else {
-		if (isset ( $_POST ["incluir"] )) {
+		if (isset ( $_GET ["incluir"] )) {
 			echo "<span class = 'notification n-error'>É preciso inserir um nome e um e-mail.</span>";
 		}
 	}
 }
 function editar() {
-	if (! empty ( $_POST ["nome"] ) & ! empty ( $_POST ["email"] ) & ! empty ( $_POST ["editar"] )) {
-		editar_pessoa ( $_POST ["id"], $_POST ["nome"], $_POST ["email"] );
+	if (! empty ( $_GET ["nome"] ) & ! empty ( $_GET ["email"] ) & ! empty ( $_GET ["editar"] )) {
+		editar_pessoa ( $_GET ["id"], $_GET ["nome"], $_GET ["email"] );
 		echo "<span class = 'notification n-success'>Dados salvos.</span>";
 	} else {
-		if (isset ( $_POST ["editar"] )) {
+		if (isset ( $_GET ["editar"] )) {
 			echo "<span class = 'notification n-error'>É preciso inserir um nome e um e-mail.</span>";
 		}
 	}
 }
 function excluir() {
-	if (! empty ( $_POST ["id"] ) & ! empty ( $_POST ["excluir"] )) {
+	if (! empty ( $_GET ["id"] ) & ! empty ( $_GET ["excluir"] )) {
 		
-		$grupos = get_grupos_pessoa ( $_POST ["id"] );
+		$grupos = get_grupos_pessoa ( $_GET ["id"] );
 		if (count($grupos) > 0) {
 			
 			echo "<span class = 'notification n-error'>A pessoa não pode ser removida pois está inserida nos seguinte(s) grupo(s):";
@@ -68,9 +68,9 @@ function excluir() {
 				echo "<li>".$grupo["nome"]."</li>";
 			}
 			echo "</ul>";
-			echo "Vá em \"Gerenciar grupos\" e localize esse(s) grupos para retirar as pessoas.</span>";
+			echo "Vá em \"Grupos\" e localize esse(s) grupo(s) para retirar as pessoas.</span>";
 		} else {
-			excluir_pessoa ( $_POST ["id"] );
+			excluir_pessoa ( $_GET ["id"] );
 			echo "<span class = 'notification n-success'>Pessoa removida.</span>";
 		}
 	}
@@ -105,17 +105,10 @@ function listar() {
 				echo "<tr class='even'>";
 			echo "<td>" . $pessoa ["nome"] . "</td>";
 			echo "<td>" . $pessoa ["email"] . "</td>";
-			echo "<td><form action = 'pessoa_edicao.php' method = 'post'>";
-			echo "<input type='hidden' name='editar' value='1' />";
-			echo "<input type='hidden' name='id' value='" . $pessoa ["id"] . "' />";
-			echo "<input type='submit' value = '' style = 'background-image:url(../resources/img/edit.png);repeat-x:no-repeat;width:20px;cursor:pointer;' title = 'clique para editar'/>";
-			echo "</form></td>";
 			echo "<td>";
-			echo "<form method = 'post'>";
-			echo "<input type='hidden' name='excluir' value='1' />";
-			echo "<input type='hidden' name='id' value='" . $pessoa ["id"] . "' />";
-			echo "<input type='submit' value = '' style = 'background-image:url(../resources/img/trash.gif);repeat-x:no-repeat;width:20px;cursor:pointer;' title = 'clique para excluir'/>";
-			echo "</form>";
+			echo "<a href = 'pessoa_edicao.php?id=".$pessoa["id"]."&editar=1' title = 'clique para alterar'/><img src = '../resources/img/edit.png'/></a>";
+			echo "<td>";
+			echo "<a href = 'pessoa_cadastro.php?id=".$pessoa["id"]."&excluir=1' title = 'clique para excluir'><img src = '../resources/img/trash.gif'></a>";
 			echo "</td>";
 			echo "</tr>";
 		}

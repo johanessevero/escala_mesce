@@ -7,6 +7,8 @@ body {
 	color: #000;
 }
 
+
+
 .clear {
 	clear: both;
 }
@@ -16,11 +18,14 @@ a {
 	/*text-decoration: none;*/
 }
 
-a:hover {
+a img:hover {
 	
 	text-decoration: underline;
+	border-color: black; 
 	
 }
+
+
 
 a#closebt {
 	position: absolute;
@@ -402,6 +407,7 @@ a.button {
 	border-top: 1px solid #fff;
 	color: #669;
 }
+
 
 #rounded-corner tr.even td {
 	padding: 8px;
@@ -792,6 +798,8 @@ input.loginform_submit {
 	border-color: black;
 	
 }
+
+
 
 
 

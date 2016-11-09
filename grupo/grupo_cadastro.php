@@ -101,25 +101,13 @@ function listar() {
 			echo "<td>" . $grupo ["nome"] . "</td>";
 			echo "<td>".get_num_pessoas_grupo($grupo["id"])."</td>";
 			monta_html_select_pessoas($grupo);
-			echo "<td><form action = 'grupo_edicao.php' method = 'post'>";
-			echo "<input type='hidden' name='editar' value='1' />";
-			echo "<input type='hidden' name='id' value='" . $grupo ["id"] . "' />";
-			echo "<input type='submit' value = '' style = 'background-image:url(../resources/img/edit.png);repeat-x:no-repeat;width:20px;cursor:pointer;' title = 'clique para editar'/>";
-			echo "</form></td>";
 			echo "<td>";
-			echo "<form method = 'post'>";
-			echo "<input type='hidden' name='excluir' value='1' />";
-			echo "<input type='hidden' name='id' value='" . $grupo ["id"] . "' />";
-			echo "<input type='submit' value = '' style = 'background-image:url(../resources/img/trash.gif);repeat-x:no-repeat;width:20px;cursor:pointer;' title = 'clique para excluir'/>";
-			echo "</form>";
-			
+			echo "<a href = 'grupo_edicao.php?id=".$grupo["id"]."&editar=1' title = 'clique para alterar'/><img src = '../resources/img/edit.png'/></a>";
+			echo "<td>";
+			echo "<a href = 'grupo_cadastro.php?id=".$grupo["id"]."&excluir=1' title = 'clique para excluir'><img src = '../resources/img/trash.gif'></a>";
 			echo "</td>";
 			echo "<td>";
-			echo "<form action = 'grupo_pessoa.php' method = 'post'>";
-			echo "<input type='hidden' name='grupo_id' value='" . $grupo ["id"] . "' />";
-			echo "<input type='submit' value = '' style = 'background-image:url(../resources/img/people.png);repeat-x:no-repeat;width:34px;height:34px;cursor:pointer;' title = 'clique para adicionar/remover pessoas ao grupo'/>";
-			echo "</form>";
-				
+			echo "<a href = 'grupo_pessoa.php?grupo_id=".$grupo["id"]."' title = 'clique para adiconar pessoas ao grupo'><img src = '../resources/img/people.png'></a>";
 			echo "</td>";
 			echo "</tr>";
 		}

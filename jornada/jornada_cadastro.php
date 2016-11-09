@@ -3,20 +3,20 @@
 <?php
 include "../template/header.php";
 include "jornada_bd.php";
-
+include "../escala/escala_bd.php";
 
 incluir ();
 excluir ();
 editar ();
 monta_form_cadastro ();
-listar	();
+listar ();
 
 ?>
 
 <?php
 function monta_form_cadastro() {
 	echo "<h2>Informações da jornada</h2>";
-	echo "<form method = 'post'>";
+	echo "<form method = 'GET'>";
 	echo "<div id='tab1' class='tabcontent' style='display: block;'>";
 	echo "<div class='form'>";
 	
@@ -42,30 +42,36 @@ function monta_form_cadastro() {
 	echo "</form>";
 }
 function incluir() {
-	if (! empty ( $_POST ["hora_inicio"] ) & ! empty ( $_POST ["hora_fim"]  ) & ! empty ( $_POST ["incluir"] )) {
-		inserir_jornada ( $_POST ["hora_inicio"], $_POST ["hora_fim"], $_POST["descricao"] );
+	if (! empty ( $_GET ["hora_inicio"] )  & ! empty ( $_GET ["incluir"] )) {
+		inserir_jornada ( $_GET ["hora_inicio"], $_GET ["hora_fim"], $_GET ["descricao"] );
 		echo "<span class = 'notification n-success'>Dados salvos.</span>";
 	} else {
-		if (isset ( $_POST ["incluir"] )) {
-			echo "<span class = 'notification n-error'>É preciso inserir uma hora de início e uma hora fim.</span>";
+		if (isset ( $_GET ["incluir"] )) {
+			echo "<span class = 'notification n-error'>É preciso inserir pelo menos uma hora de início.</span>";
 		}
 	}
 }
 function editar() {
-	if (! empty ( $_POST ["hora_inicio"] ) & ! empty ( $_POST ["hora_fim"] ) & ! empty ( $_POST ["editar"] )) {
-		editar_jornada ( $_POST ["id"], $_POST ["hora_inicio"], $_POST ["hora_fim"] , $_POST["descricao"] );
+	if (! empty ( $_GET ["hora_inicio"] ) & ! empty ( $_GET ["hora_fim"] ) & ! empty ( $_GET ["editar"] )) {
+		editar_jornada ( $_GET ["id"], $_GET ["hora_inicio"], $_GET ["hora_fim"], $_GET ["descricao"] );
 		echo "<span class = 'notification n-success'>Dados salvos.</span>";
 	} else {
-		if (isset ( $_POST ["editar"] )) {
+		if (isset ( $_GET ["editar"] )) {
 			echo "<span class = 'notification n-error'>É preciso inserir uma hora de início e uma hora fim.</span>";
 		}
 	}
 }
 function excluir() {
-	if (! empty ( $_POST ["id"] ) & ! empty ( $_POST ["excluir"] )) {
+	if (! empty ( $_GET ["id"] ) & ! empty ( $_GET ["excluir"] )) {
 		
-		excluir_jornada ( $_POST ["id"] );
-		echo "<span class = 'notification n-success'>Jornada removida.</span>";
+		$escala_jornada = get_first_jornada ( $_GET ["id"] );
+		
+		if (! empty ( $escala_jornada )) {
+			echo "<span class = 'notification n-error'>A jornada não pode ser removida pois está sendo usada na escala " . get_escala_por_id($escala_jornada ["escala_id"] ) ["descricao"] . ".</span>";
+		} else {
+			excluir_jornada ( $_GET ["id"] );
+			echo "<span class = 'notification n-success'>Jornada removida.</span>";
+		}
 	}
 }
 function listar() {
@@ -100,17 +106,10 @@ function listar() {
 			echo "<td>" . $jornada ["hora_inicio"] . "</td>";
 			echo "<td>" . $jornada ["hora_fim"] . "</td>";
 			echo "<td>" . $jornada ["descricao"] . "</td>";
-			echo "<td><form action = 'jornada_edicao.php' method = 'post'>";
-			echo "<input type='hidden' name='editar' value='1' />";
-			echo "<input type='hidden' name='id' value='" . $jornada ["id"] . "' />";
-			echo "<input type='submit' value = '' style = 'background-image:url(../resources/img/edit.png);repeat-x:no-repeat;width:20px;cursor:pointer;' title = 'clique para editar'/>";
-			echo "</form></td>";
 			echo "<td>";
-			echo "<form method = 'post'>";
-			echo "<input type='hidden' name='excluir' value='1' />";
-			echo "<input type='hidden' name='id' value='" . $jornada ["id"] . "' />";
-			echo "<input type='submit' value = '' style = 'background-image:url(../resources/img/trash.gif);repeat-x:no-repeat;width:20px;cursor:pointer;' title = 'clique para excluir'/>";
-			echo "</form>";
+			echo "<a href = 'jornada_edicao.php?id=" . $jornada ["id"] . "&editar=1' title = 'clique para alterar'/><img src = '../resources/img/edit.png'/></a></td>";
+			echo "<td>";
+			echo "<a href = 'jornada_cadastro.php?id=" . $jornada ["id"] . "&excluir=1' title = 'clique para excluir'><img src = '../resources/img/trash.gif'></a>";
 			echo "</td>";
 			echo "</tr>";
 		}

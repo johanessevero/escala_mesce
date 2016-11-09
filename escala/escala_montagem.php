@@ -13,19 +13,19 @@
 
 <?php
 function inserir_jornada_escala_dia() {
-	if (! empty ( $_POST ["adicionar_jornada"] )) {
+	if (! empty ( $_GET ["adicionar_jornada"] )) {
 		
-		if (! inserir_jornada_escala ( $_POST ["escala_id"], $_POST ["jornada_id"], $_POST ["dia"], $_POST ["mes"], $_POST ["ano"] )) {
+		if (! inserir_jornada_escala ( $_GET ["escala_id"], $_GET ["jornada_id"], $_GET ["dia"], $_GET ["mes"], $_GET ["ano"] )) {
 			echo "<span class = 'notification n-error'>Não foi possível adicionar a jornada.</span>";
 		} else
 			echo "<span class = 'notification n-success'>Jornada adicionada.</span>";
 	}
 }
 function excluir_jornada_escala_dia() {
-	if (! empty ( $_POST ["excluir_jornada"] )) {
+	if (! empty ( $_GET ["excluir_jornada"] )) {
 		
-		if (count ( get_first_pessoa_jornada ( $_POST ["escala_id"], $_POST ["jornada_id"], $_POST ["dia"], $_POST ["mes"], $_POST ["ano"] ) ) == 0) {
-			if (! excluir_jornada_escala ( $_POST ["escala_id"], $_POST ["jornada_id"], $_POST ["dia"], $_POST ["mes"], $_POST ["ano"] )) {
+		if (count ( get_first_pessoa_jornada ( $_GET ["escala_id"], $_GET ["jornada_id"], $_GET ["dia"], $_GET ["mes"], $_GET ["ano"] ) ) == 0) {
+			if (! excluir_jornada_escala ( $_GET ["escala_id"], $_GET ["jornada_id"], $_GET ["dia"], $_GET ["mes"], $_GET ["ano"] )) {
 				echo "<span class = 'notification n-error'>Não foi possível remover a jornada.</span>";
 			} else
 				echo "<span class = 'notification n-success'>Jornada removida.</span>";
@@ -37,12 +37,12 @@ function excluir_jornada_escala_dia() {
 function monta_html_form_config_escala_mes() {
 	$cont_semana = 0;
 	
-	$escala = get_escala_por_id ( $_POST ["escala_id"] );
+	$escala = get_escala_por_id ( $_GET ["escala_id"] );
 	
 	$data_inicio = explode ( "/", get_data ( $escala ["data_inicio"] ) );
 	$data_fim = explode ( "/", get_data ( $escala ["data_fim"] ) );
 	
-	echo "<form method = 'post'>";
+	echo "<form method = 'GET'>";
 	echo "<h2>Informações da escala </h2>";
 	echo "<table id='rounded-corner'>";
 	echo "<thead>";
@@ -89,32 +89,32 @@ function monta_html_horarios($escala_id, $dia, $mes, $ano, $grupo_id) {
 	$cont = 1;
 	foreach ( $jornadas as $jornada ) {
 		
-		echo "<td><b>" . $jornada ["hora_inicio"] . "-" . $jornada ["hora_fim"] . " " . $jornada ["descricao"] . "</b></td>";
-		echo "<td><form method = 'post'>";
+		echo "<td><b>" . $jornada ["hora_inicio"] . (strcmp($jornada ["hora_fim"], "00:00:00") == 0 ? "" : " - " . $jornada ["hora_fim"]) . " " . $jornada ["descricao"] . "</b></td>";
+		echo "<td>";
+		$link = "<a href = 'escala_montagem.php?escala_id=" . $escala_id;
+		$link .= "&jornada_id=" . $jornada ["id"];
+		$link .= "&dia=" . $dia;
+		$link .= "&mes=" . $mes;
+		$link .= "&ano=" . $ano;
 		if (! empty ( get_escala_jornada ( $escala_id, $jornada ["id"], $dia, $mes, $ano ) )) {
 			
-			echo "<input type='submit' value = '' style = 'background-image:url(../resources/img/minus-circle.gif);repeat-x:no-repeat;width:20px;height:20px;cursor:pointer;' title = 'clique para remover a jornada da escala'/>";
-			echo "<input type='hidden' name='excluir_jornada' value='1' />";
+			$link .= "&escala_montagem.php?&excluir_jornada=1'><img src = '../resources/img/minus-circle.gif'></a>";
 		} else {
-			echo "<input type='submit' value = '' style = 'background-image:url(../resources/img/tick-circle.gif);repeat-x:no-repeat;width:20px;height:20px;cursor:pointer;' title = 'clique para adicionar a jornada na escala'/>";
-			
-			echo "<input type='hidden' name='adicionar_jornada' value='1' />";
+			$link .= "&escala_montagem.php?&adicionar_jornada=1'><img src = '../resources/img/tick-circle.gif'></a>";
 		}
-		echo "<input type='hidden' name='escala_id' value='" . $escala_id . "' />";
-		echo "<input type='hidden' name='jornada_id' value='" . $jornada ["id"] . "' />";
-		echo "<input type='hidden' name='dia' value='" . $dia . "' />";
-		echo "<input type='hidden' name='mes' value='" . $mes . "' />";
-		echo "<input type='hidden' name='ano' value='" . $ano . "' />";
-		echo "</form></td>";
-		echo "<td>" . "<form action = 'escala_pessoa_jornada.php' method = 'post'>";
-		echo "<input type='submit' value = '' style = 'background-image:url(../resources/img/people.png);repeat-x:no-repeat;width:34px;height:34px;cursor:pointer;' title = 'clique para adicionar/remover pessoas à jornada'/>";
-		echo "<input type='hidden' name='escala_id' value='" . $escala_id . "' />";
-		echo "<input type='hidden' name='jornada_id' value='" . $jornada ["id"] . "' />";
-		echo "<input type='hidden' name='dia' value='" . $dia . "' />";
-		echo "<input type='hidden' name='mes' value='" . $mes . "' />";
-		echo "<input type='hidden' name='ano' value='" . $ano . "' />";
-		echo "<input type='hidden' name='grupo_id' value='" . $grupo_id . "' />";
-		echo "</form>" . "</td>";
+		echo $link;
+		echo "</td>";
+		echo "<td>";
+		$link = "";
+		$link = "<a href = 'escala_pessoa_jornada.php?escala_id=" . $escala_id;
+		$link .= "&jornada_id=" . $jornada ["id"];
+		$link .= "&dia=" . $dia;
+		$link .= "&mes=" . $mes;
+		$link .= "&ano=" . $ano;
+		$link .= "&grupo_id=" . $grupo_id;
+		$link .= "'><img src = '../resources/img/people.png'></a>";
+		echo $link;
+		echo "</td>";
 		
 		if ($cont % 3 == 0) {
 			echo "</tr><tr>";

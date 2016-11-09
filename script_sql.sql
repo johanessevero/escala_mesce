@@ -79,7 +79,7 @@ DROP TABLE IF EXISTS `escala_web`.`jornada` ;
 CREATE TABLE IF NOT EXISTS `escala_web`.`jornada` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `hora_inicio` TIME NOT NULL,
-  `hora_fim` TIME NOT NULL,
+  `hora_fim` TIME NULL,
   `coordenador_id` INT NOT NULL,
   `descricao` VARCHAR(200) NULL,
   PRIMARY KEY (`id`, `coordenador_id`),

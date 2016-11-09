@@ -50,6 +50,25 @@ function get_jornadas() {
 	return $jornadas;
 }
 
+function get_first_jornada($id) {
+	$sql = "select * from escala_jornada where jornada_id = ".$id;
+	$sql .= " ORDER BY escala_jornada.jornada_id ASC LIMIT 1";
+	$resultado = mysqli_query ( get_conexao (), $sql );
+
+	$jornadas = array ();
+
+	while ( $jornada = mysqli_fetch_assoc ( $resultado ) ) {
+
+		$jornadas [] = $jornada;
+
+	}
+
+	if (count ( $jornadas ) > 0)
+		return $jornadas[0];
+		else
+			return $jornadas;
+}
+
 
 
 ?>

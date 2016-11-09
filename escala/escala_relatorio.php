@@ -1,5 +1,7 @@
 	<?php
-	include "../template/header.php";
+	session_start();
+	include "../util/bd_util.php";
+	include "../util/util.php";
 	include "escala_bd.php";
 	include "../pessoa/pessoa_bd.php";
 	include "../jornada/jornada_bd.php";
@@ -13,13 +15,13 @@
 	function monta_html_relatorio() {
 		$cont_semana = 0;
 		
-		$escala = get_escala_por_id ( $_POST ["escala_id"] );
+		$escala = get_escala_por_id ( $_GET ["escala_id"] );
 		
 		$data_inicio = explode ( "/", get_data ( $escala ["data_inicio"] ) );
 		$data_fim = explode ( "/", get_data ( $escala ["data_fim"] ) );
 		
 		echo "<div>";
-		echo "<table cellspacing = 0 cellpadding = 0 bordercolor = 'black' border = 1 style = 'text-align:center;font-size:10pt;'>";
+		echo "<table id='rounded-corner' cellspacing = 0 cellpadding = 0 bordercolor = 'black' border = 1 style = 'text-align:center;font-size:10pt;width:100%;'>";
 		echo "<thead>";
 		echo "<tr >";
 		echo "<th colspan = '3' >".$escala["descricao"]."</th>";
@@ -46,6 +48,8 @@
 			echo "</tr>";
 		}
 		
+		echo "<tr><td colspan = '3'>". $escala["observacao"] ."</td></tr>";
+		
 		echo "<tbody>";
 		echo "</table>";
 		echo "</div>";
@@ -56,7 +60,7 @@
 		
 		echo "<td>";
 		
-		echo "<table style = 'text-align:center;font-size:10pt;'>";
+		echo "<table  border = 1 cellspacing = 0 cellpadding = 1 style = 'width:100%;text-align:center;font-size:10pt;'>";
 		
 		if (count ( $jornadas ) == 0)
 			echo "<tr><td >nenhum horário para este dia</td></tr>";
@@ -65,9 +69,9 @@
 			
 			$pessoas = get_pessoas_escala_jornada ( $escala_id, $jornada ["id"], $dia, $mes, $ano );
 			
-			echo "<tr>";
-			echo "<td style = 'text-align:center;'><b>" . $jornada ["hora_inicio"] . " - " . $jornada ["hora_fim"] . " " . $jornada ["descricao"] . "</b></td>";
-			echo "<td style = 'text-align:center;'>";
+			echo "<tr >";
+			echo "<td style = 'text-align:center;width:50%;border-width:1px;'><b>" . $jornada ["hora_inicio"] . (strcmp($jornada ["hora_fim"], "00:00:00") == 0 ? "" : " - " . $jornada ["hora_fim"]) . " " . $jornada ["descricao"] . "</b></td>";
+			echo "<td style = 'text-align:center;width:50%;'>";
 			if (count ( $pessoas ) == 0) {
 				echo "nenhuma pessoa para esse horário";
 			} else {
@@ -82,12 +86,10 @@
 			echo "</td>";
 			echo "</tr>";
 		}
-		
+				
 		echo "</table>";
 		
 		echo "</td>";
 	}
-	
-	include "../template/footer.php";
 	
 	?>

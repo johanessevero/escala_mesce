@@ -10,24 +10,24 @@ include "../grupo/grupo_bd.php";
 
 inserir ();
 excluir ();
-listar_pessoas ( $_POST ["grupo_id"] );
+listar_pessoas ( $_GET ["grupo_id"] );
 
 ?>
 
 <?php
 function inserir() {
-	if (! empty ( $_POST ["adicionar_pessoa"] )) {
+	if (! empty ( $_GET ["adicionar_pessoa"] )) {
 		
-		if (! inserir_pessoa_escala_jornada ( $_POST ["pessoa_id"], $_POST ["escala_id"], $_POST ["jornada_id"], $_POST ["dia"], $_POST ["mes"], $_POST ["ano"] ))
+		if (! inserir_pessoa_escala_jornada ( $_GET ["pessoa_id"], $_GET ["escala_id"], $_GET ["jornada_id"], $_GET ["dia"], $_GET ["mes"], $_GET ["ano"] ))
 			echo "<span class = 'notification n-error'>Não foi possível adicionar a pessoa.</span>";
 		else
 			echo "<span class = 'notification n-success'>Pessoa adicionada.</span>";
 	}
 }
 function excluir() {
-	if (! empty ( $_POST ["excluir_pessoa"] )) {
+	if (! empty ( $_GET ["excluir_pessoa"] )) {
 		
-		if (! excluir_pessoa_escala_jornada ( $_POST ["pessoa_id"], $_POST ["escala_id"], $_POST ["jornada_id"], $_POST ["dia"], $_POST ["mes"], $_POST ["ano"] ))
+		if (! excluir_pessoa_escala_jornada ( $_GET ["pessoa_id"], $_GET ["escala_id"], $_GET ["jornada_id"], $_GET ["dia"], $_GET ["mes"], $_GET ["ano"] ))
 			echo "<span class = 'notification n-error'>Não foi possível remover a pessoa.</span>";
 		else
 			echo "<span class = 'notification n-success'>Pessoa removida.</span>";
@@ -37,14 +37,14 @@ function listar_pessoas($grupo_id) {
 	$grupo = get_grupo_por_id ( $grupo_id );
 	$pessoas = get_pessoas_grupo ( $grupo_id );
 	
-	echo "<form action = 'escala_montagem.php' method = 'post'>";
-	echo "<input type='hidden' name='escala_id' value='" . $_POST ["escala_id"] . "' />";
+	echo "<form action = 'escala_montagem.php' method = 'GET'>";
+	echo "<input type='hidden' name='escala_id' value='" . $_GET ["escala_id"] . "' />";
 	echo "<input type='submit' class = 'form_submit' value = 'Voltar' title = 'clique para voltar'/>";
 	echo "</form>";
 	
 	if (count ( $pessoas ) > 0) {
 		
-		$jornada = get_jornada_por_id ( $_POST ["jornada_id"] );
+		$jornada = get_jornada_por_id ( $_GET ["jornada_id"] );
 		
 		echo "</tr>";
 		echo "<h2>Pessoas - selecione as pessoas do grupo " . $grupo ["nome"] . " que deseja escalar na jornada de " . $jornada ["hora_inicio"] . " - " . $jornada ["hora_fim"] . "</h2>";
@@ -70,22 +70,19 @@ function listar_pessoas($grupo_id) {
 			echo "<td>" . $pessoa ["nome"] . "</td>";
 			echo "<td>" . $pessoa ["email"] . "</td>";
 			echo "<td>";
-			echo "<form action = 'escala_pessoa_jornada.php' method = 'post'>";
-			echo "<input type='hidden' name='pessoa_id' value='" . $pessoa ["id"] . "' />";
-			echo "<input type='hidden' name='escala_id' value='" . $_POST ["escala_id"] . "' />";
-			echo "<input type='hidden' name='jornada_id' value='" . $_POST ["jornada_id"] . "' />";
-			echo "<input type='hidden' name='grupo_id' value='" . $_POST ["grupo_id"] . "' />";
-			echo "<input type='hidden' name='dia' value='" . $_POST ["dia"] . "' />";
-			echo "<input type='hidden' name='mes' value='" . $_POST ["mes"] . "' />";
-			echo "<input type='hidden' name='ano' value='" . $_POST ["ano"] . "' />";
-			if (! empty ( get_pessoa_escala_jornada ( $pessoa ["id"], $_POST ["escala_id"], $_POST ["jornada_id"], $_POST ["dia"], $_POST ["mes"], $_POST ["ano"] ) )) {
-				echo "<input type='submit' value = '' style = 'background-image:url(../resources/img/minus-circle.gif);repeat-x:no-repeat;width:20px;height:20px;cursor:pointer;' title = 'clique para remover a pessoa'/>";
-				echo "<input type='hidden' name='excluir_pessoa' value='1' />";
+			$link_add = "<a href = 'escala_pessoa_jornada.php?pessoa_id=" . $pessoa ["id"];
+			$link_add .= "&escala_id=" . $_GET ["escala_id"];
+			$link_add .= "&jornada_id=" . $_GET ["jornada_id"];
+			$link_add .= "&grupo_id=" . $_GET ["grupo_id"];
+			$link_add .= "&dia=" . $_GET ["dia"];
+			$link_add .= "&mes=" . $_GET ["mes"];
+			$link_add .= "&ano=" . $_GET ["ano"];
+			if (! empty ( get_pessoa_escala_jornada ( $pessoa ["id"], $_GET ["escala_id"], $_GET ["jornada_id"], $_GET ["dia"], $_GET ["mes"], $_GET ["ano"] ) )) {
+				$link_add .= "&excluir_pessoa=1' title = 'clique para alterar'/><img src = '../resources/img/minus-circle.gif'/></a></td>";
 			} else {
-				echo "<input type='submit' value = '' style = 'background-image:url(../resources/img/tick-circle.gif);repeat-x:no-repeat;width:20px;height:20px;cursor:pointer;' title = 'clique para adicionar a pessoa'/>";
-				echo "<input type='hidden' name='adicionar_pessoa' value='1' />";
+				$link_add .= "&adicionar_pessoa=1' title = 'clique para alterar'/><img src = '../resources/img/tick-circle.gif'/></a></td>";
 			}
-			
+			echo $link_add;
 			echo "</form>";
 			
 			echo "</td>";
