@@ -5,9 +5,9 @@ function get_conexao() {
 	$endereco = "127.0.0.1";
 	$usuario = "root";
 	/**CASA**/
-	//$senha = "john";
+	$senha = "john";
 	/**INEP**/
-	$senha = "root";
+	//$senha = "root";
 	$nome_banco = "escala_web";
 	
 	$conexao = mysqli_connect ( $endereco, $usuario, $senha, $nome_banco );

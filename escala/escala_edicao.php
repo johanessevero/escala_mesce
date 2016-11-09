@@ -12,7 +12,7 @@ function monta_html_form_edicao() {
 	
 	$escala = get_escala_por_id($_POST["escala_id"]);
 	
-	echo "<h2>Informações da escala</h2>";
+	echo "<h2>Informações da escala</h2>";	
 	echo "<form action = 'escala_cadastro.php' method = 'post'>";
 	echo "<div id='tab1' class='tabcontent' style='display: block;'>";
 	echo "<div class='form'>";
@@ -27,6 +27,10 @@ function monta_html_form_edicao() {
 	
 	echo "<div class='form_row'>";
 	echo "<label>Descrição:</label> <input type='text' value = '".$escala["descricao"]."' name = 'descricao' class='form_input' >";
+	echo "</div>";
+	
+	echo "<div class='form_row'>";
+	echo "<label>Observação:</label> <input type='textarea' name = 'observacao' class='form_textarea' >";
 	echo "</div>";
 	
 

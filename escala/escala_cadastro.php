@@ -27,6 +27,9 @@ function monta_html_form_cadastro() {
 	echo "<div class='form_row'>";
 	echo "<label>Descrição:</label> <input type='text' name = 'descricao' class='form_input' >";
 	echo "</div>";
+	echo "<div class='form_row'>";
+	echo "<label>Observação:</label> <input type='textarea' name = 'observacao' class='form_textarea' >";
+	echo "</div>";
 	echo "<input type='hidden' name='incluir' value='1' />";
 	monta_html_select_grupos ();
 	echo "<div class='form_row'>";
@@ -54,8 +57,9 @@ function incluir() {
 		$escala ["data_fim"] = $_POST ["data_fim"];
 		$escala ["grupo_id"] = $_POST ["grupo_id"];
 		$escala ["descricao"] = $_POST ["descricao"];
+		$escala["observacao"] = $_POST["observacao"];
 		
-		if (empty ( $escala ["data_inicio"] ) | empty ( $escala ["data_fim"] ) | empty ( $escala ["grupo_id"] ) | empty ( $escala ["descricao"] )) {
+		if (empty ( $escala ["data_inicio"] ) | empty ( $escala ["data_fim"] ) | empty ( $escala ["grupo_id"] ) | empty ( $escala ["descricao"] | empty($escala["observacao"]))) {
 			
 			echo "<span class = 'notification n-error'>Para inserir uma nova escala, é preciso inserir uma data de início, uma data fim, uma descrição  e um grupo.</span>";
 		} else {
@@ -82,15 +86,17 @@ function incluir() {
 					$escala["id"] = $_POST["escala_id"];
 					
 					if (count(get_first_escala_pessoa($escala["id"])) > 0) {
-						echo "<span class = 'notification n-error'>Não é possível alterar essa escala, somente a descrição, pois existem pessoas associadas.</span>";
+						echo "<span class = 'notification n-error'>Não é possível alterar essa escala, somente a descrição e a observação, pois existem pessoas associadas.</span>";
 						$escala = get_escala_por_id($_POST["escala_id"]);
 						$escala["descricao"] = $_POST["descricao"];
+						$escala["observacao"] = $_POST["observacao"];
 						$resultado = alterar_escala ( $escala );
 					}
 					else if (count(get_first_escala_jornada($escala["id"])) > 0) {
-						echo "<span class = 'notification n-error'>Não é possível alterar essa escala, somente a descrição, pois existem jornadas associadas.</span>";
+						echo "<span class = 'notification n-error'>Não é possível alterar essa escala, somente a descrição e a observação, pois existem jornadas associadas.</span>";
 						$escala = get_escala_por_id($_POST["escala_id"]);
 						$escala["descricao"] = $_POST["descricao"];
+						$escala["observacao"] = $_POST["observacao"];
 						$resultado = alterar_escala ( $escala );
 					}
 					else

@@ -1,8 +1,8 @@
 <?php
 function inserir_escala($escala) {
-	$sql = "insert into escala (data_inicio, data_fim, descricao, grupo_id, coordenador_id)";
+	$sql = "insert into escala (data_inicio, data_fim, descricao, observacao, grupo_id, coordenador_id)";
 	$sql .= " values ('" . $escala ["data_inicio"] . "','";
-	$sql .= $escala ["data_fim"] . "','" . $escala ["descricao"] . "'," . $escala ["grupo_id"] . "," . $_SESSION ["coordenador_id"] . ")";
+	$sql .= $escala ["data_fim"] . "','" . $escala ["descricao"] . "','"  . $escala ["observacao"] . "'," . $escala ["grupo_id"] . "," . $_SESSION ["coordenador_id"] . ")";
 	
 	return mysqli_query ( get_conexao (), $sql );
 }
@@ -23,7 +23,7 @@ function excluir_escala($id) {
 	return $resultado;
 }
 function editar_escala($escala) {
-	$sql = "update escala set descricao = '" . $escala ["descricao"] . "', data_inicio = '" . $escala ["data_inicio"] . "', data_fim = '" . $escala ["data_fim"] . "', grupo_id = " . $escala ["grupo_id"] . " where id = " . $escala ["id"] . " and coordenador_id = " . $_SESSION ["coordenador_id"];
+	$sql = "update escala set observacao = '".$escala["observacao"]."', descricao = '" . $escala ["descricao"] . "', data_inicio = '" . $escala ["data_inicio"] . "', data_fim = '" . $escala ["data_fim"] . "', grupo_id = " . $escala ["grupo_id"] . " where id = " . $escala ["id"] . " and coordenador_id = " . $_SESSION ["coordenador_id"];
 	
 	return mysqli_query ( get_conexao (), $sql );
 }

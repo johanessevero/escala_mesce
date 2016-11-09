@@ -74,7 +74,7 @@ a.button {
 }
 
 #panelwrap {
-	width: 1000px;
+	width: auto;
 	margin: 20px auto;
 	background-color: #FFFFFF;
 	-moz-border-radius: 10px;
